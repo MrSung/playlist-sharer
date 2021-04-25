@@ -5,14 +5,18 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
+    "deploy": "firebase deploy --only hosting:playlist-sharer",
     "eslint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "postinstall": "typesync"
   },
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@types/eslint": "^7.2.10",
+    "@types/prettier": "^2.2.3",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -24,6 +28,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.2.1",
     "typescript": "^4.2.4",
+    "typesync": "^0.8.0",
     "vite": "^2.1.5"
   }
 }
