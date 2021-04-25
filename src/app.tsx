@@ -1,11 +1,7 @@
 import React from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      app
-    </div>
-  )
+const App: React.FC = () => {
+  return <div className='App'>app</div>
 }
 
 export default App
