@@ -12,8 +12,8 @@ export const AuthApp: React.FC = () => {
     <div>
       <h1>Playlist Sharer</h1>
       <p>
-        Playlist Sharer is a social app that enables you to share your shopping
-        lists with friends in realtime.
+        Playlist Sharer is a social app that enables you to share your playlist
+        with friends in realtime.
       </p>
       <button type="button" onClick={onClickSignOut}>
         Sign Out
