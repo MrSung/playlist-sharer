@@ -19,6 +19,9 @@ const firebaseApp =
     ? firebase.initializeApp(firebaseConfig)
     : firebase.app()
 const auth = firebaseApp.auth()
+const db = firebaseApp.firestore()
+
+const COLLECTION_ID = 'playlists'
 
 export const signInWithGoogle = async (): Promise<void> => {
   const provider = new firebase.auth.GoogleAuthProvider()
@@ -39,4 +42,25 @@ export const signOut = async (): Promise<void> => {
   await auth.signOut()
 
   window.location.reload()
+}
+
+interface ICollectionItem {
+  album: string
+  artist: string
+  dateAdded: {
+    nanoseconds: number
+    seconds: number
+  }
+  id: string
+  index: number
+  title: string
+}
+
+export type Collection = ICollectionItem[]
+
+export const getCollection = async (): Promise<Collection> => {
+  const snapshot = await db.collection(COLLECTION_ID).get()
+  const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+
+  return data as Collection
 }

@@ -4,9 +4,19 @@ import * as db from './db'
 import * as hooks from './hooks'
 
 export const AuthApp: React.FC = () => {
+  const [collection, setCollection] = React.useState<db.Collection | null>(null)
+
   const onClickSignOut = () => {
     db.signOut()
   }
+
+  React.useEffect(() => {
+    ;(async () => {
+      const collection = await db.getCollection()
+
+      setCollection(collection)
+    })()
+  }, [])
 
   return (
     <div>
@@ -18,6 +28,27 @@ export const AuthApp: React.FC = () => {
       <button type="button" onClick={onClickSignOut}>
         Sign Out
       </button>
+      <hr />
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>title</th>
+            <th>artist</th>
+            <th>album</th>
+          </tr>
+        </thead>
+        <tbody>
+          {collection?.map((o) => (
+            <tr key={o.id}>
+              <td>{o.index}</td>
+              <td>{o.title}</td>
+              <td>{o.artist}</td>
+              <td>{o.album}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }
