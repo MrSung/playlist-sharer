@@ -44,7 +44,7 @@ export const signOut = async (): Promise<void> => {
   window.location.reload()
 }
 
-interface ICollectionItem {
+interface IPlaylistsItem {
   album: string
   artist: string
   // dateAdded: {
@@ -56,17 +56,17 @@ interface ICollectionItem {
   title: string
 }
 
-export type Collection = ICollectionItem[]
+export type Playlists = IPlaylistsItem[]
 
-export const getCollection = async (): Promise<Collection> => {
+export const getPlaylists = async (): Promise<Playlists> => {
   const snapshot = await db.collection(COLLECTION_ID).get()
   const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 
-  return data as Collection
+  return data as Playlists
 }
 
 interface ICreatePlaylistArgs {
-  item: Omit<ICollectionItem, 'id'>
+  item: Omit<IPlaylistsItem, 'id'>
   user: firebase.User
 }
 

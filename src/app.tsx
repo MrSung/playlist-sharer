@@ -1,4 +1,5 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer } from 'react'
+import useSWR from 'swr'
 
 import * as db from './db'
 import * as hooks from './hooks'
@@ -72,20 +73,15 @@ interface IAuthAppProps {
 }
 
 export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
-  const [collection, setCollection] = useState<db.Collection | null>(null)
   const [formState, dispatch] = useReducer(reducer, initialFormState)
+  const { data: playlists, error } = useSWR(
+    user !== null ? user.uid : '',
+    db.getPlaylists
+  )
 
   const onClickSignOut = () => {
     db.signOut()
   }
-
-  React.useEffect(() => {
-    ;(async () => {
-      const collection = await db.getCollection()
-
-      setCollection(collection)
-    })()
-  }, [])
 
   return (
     <div>
@@ -100,6 +96,7 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
       <hr />
       <form
         autoComplete='off'
+        onSubmit={() => false}
         style={{ display: 'flex', alignItems: 'flex-end' }}>
         <label>
           <span>Title: </span>
@@ -146,14 +143,14 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
         <button
           type='button'
           onClick={async () => {
-            if (collection === null || user === null) {
+            if (typeof playlists === 'undefined' || user === null) {
               return
             }
 
             await db.createPlaylist({
               user,
               item: {
-                index: collection.length,
+                index: playlists.length,
                 album: formState.album,
                 artist: formState.artist,
                 title: formState.title,
@@ -176,7 +173,15 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
         </thead>
         <tbody>
           {(() => {
-            if (collection === null) {
+            if (error) {
+              return (
+                <tr>
+                  <td colSpan={4}>{error.message}</td>
+                </tr>
+              )
+            }
+
+            if (typeof playlists === 'undefined') {
               return (
                 <tr>
                   <td colSpan={4}>{loadingString}</td>
@@ -184,9 +189,15 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
               )
             }
 
-            const sorted = collection.sort(
-              (a, b) => a.index - b.index
-            )
+            if (playlists.length === 0) {
+              return (
+                <tr>
+                  <td colSpan={4}>There are no playlists.</td>
+                </tr>
+              )
+            }
+
+            const sorted = playlists.sort((a, b) => a.index - b.index)
 
             return sorted.map((o) => (
               <tr key={o.id}>
