@@ -66,7 +66,12 @@ const reducer: React.Reducer<IInitialFormState, Action> = (state, action) => {
   }
 }
 
-export const AuthApp: React.FC = () => {
+interface IAuthAppProps {
+  user: db.User
+  loadingString: string
+}
+
+export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
   const [collection, setCollection] = useState<db.Collection | null>(null)
   const [formState, dispatch] = useReducer(reducer, initialFormState)
 
@@ -93,7 +98,9 @@ export const AuthApp: React.FC = () => {
         Sign Out
       </button>
       <hr />
-      <form autoComplete='off' style={{ display: 'flex', alignItems: 'flex-end' }}>
+      <form
+        autoComplete='off'
+        style={{ display: 'flex', alignItems: 'flex-end' }}>
         <label>
           <span>Title: </span>
           <input
@@ -136,7 +143,26 @@ export const AuthApp: React.FC = () => {
             }}
           />
         </label>
-        <button type='submit' style={{ marginBottom: '10px' }}>Add song</button>
+        <button
+          type='button'
+          onClick={async () => {
+            if (collection === null || user === null) {
+              return
+            }
+
+            await db.createPlaylist({
+              user,
+              item: {
+                index: collection.length,
+                album: formState.album,
+                artist: formState.artist,
+                title: formState.title,
+              },
+            })
+          }}
+          style={{ marginBottom: '10px' }}>
+          Add song
+        </button>
       </form>
       <hr />
       <table>
@@ -149,14 +175,28 @@ export const AuthApp: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {collection?.map((o) => (
-            <tr key={o.id}>
-              <td>{o.index}</td>
-              <td>{o.title}</td>
-              <td>{o.artist}</td>
-              <td>{o.album}</td>
-            </tr>
-          ))}
+          {(() => {
+            if (collection === null) {
+              return (
+                <tr>
+                  <td colSpan={4}>{loadingString}</td>
+                </tr>
+              )
+            }
+
+            const sorted = collection.sort(
+              (a, b) => a.index - b.index
+            )
+
+            return sorted.map((o) => (
+              <tr key={o.id}>
+                <td>{o.index}</td>
+                <td>{o.title}</td>
+                <td>{o.artist}</td>
+                <td>{o.album}</td>
+              </tr>
+            ))
+          })()}
         </tbody>
       </table>
     </div>
@@ -186,5 +226,13 @@ export const App: React.FC = () => {
     return <div>{loadingString}</div>
   }
 
-  return <div>{user === null ? <UnAuthApp /> : <AuthApp />}</div>
+  return (
+    <div>
+      {user === null ? (
+        <UnAuthApp />
+      ) : (
+        <AuthApp user={user} loadingString={loadingString} />
+      )}
+    </div>
+  )
 }
