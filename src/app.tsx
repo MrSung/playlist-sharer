@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 import * as db from './db'
 import * as hooks from './hooks'
@@ -75,7 +75,7 @@ interface IAuthAppProps {
 export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
   const [formState, dispatch] = useReducer(reducer, initialFormState)
   const { data: playlists, error } = useSWR(
-    user !== null ? user.uid : '',
+    db.COLLECTION_ID,
     db.getPlaylists
   )
 
@@ -156,6 +156,7 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
                 title: formState.title,
               },
             })
+            await mutate(db.COLLECTION_ID)
           }}
           style={{ marginBottom: '10px' }}>
           Add song

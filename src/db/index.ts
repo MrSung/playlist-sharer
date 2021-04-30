@@ -21,7 +21,7 @@ const firebaseApp =
 const auth = firebaseApp.auth()
 const db = firebaseApp.firestore()
 
-const COLLECTION_ID = 'playlists'
+export const COLLECTION_ID = 'playlists'
 
 export const signInWithGoogle = async (): Promise<void> => {
   const provider = new firebase.auth.GoogleAuthProvider()
