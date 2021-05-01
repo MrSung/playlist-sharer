@@ -76,7 +76,11 @@ export const Home: React.FC = () => {
 
   const loadingString = useLoading()
 
-  const onClickSignOut = () => {
+  const handleClickSignOut = (
+    ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    ev.preventDefault()
+
     db.signOut()
   }
 
@@ -87,8 +91,8 @@ export const Home: React.FC = () => {
         Playlist Sharer is a social app that enables you to share playlists
         according to your favorite song with friends in realtime.
       </p>
-      <div>
-        <a href='javascript: void(0)' onClick={onClickSignOut}>
+      <div style={{ textAlign: 'right' }}>
+        <a href='' onClick={handleClickSignOut}>
           Sign Out
         </a>
       </div>
