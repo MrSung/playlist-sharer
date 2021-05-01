@@ -1,0 +1,13 @@
+th,
+td {
+  vertical-align: middle;
+}
+
+button {
+  margin-bottom: 0;
+}
+
+.table th:first-child,
+.table td:first-child {
+  width: 2em;
+}

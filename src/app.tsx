@@ -87,8 +87,7 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
     <div>
       <h1>Playlist Sharer</h1>
       <p>
-        Playlist Sharer is a social app that enables you to share your playlist
-        with friends in realtime.
+        Playlist Sharer is a social app that enables you to share playlists according to your favorite song with friends in realtime.
       </p>
       <button type='button' onClick={onClickSignOut}>
         Sign Out
@@ -163,13 +162,14 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
         </button>
       </form>
       <hr />
-      <table>
+      <table className='table'>
         <thead>
           <tr>
             <th>#</th>
             <th>title</th>
             <th>artist</th>
             <th>album</th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -177,7 +177,7 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
             if (error) {
               return (
                 <tr>
-                  <td colSpan={4}>{error.message}</td>
+                  <td colSpan={5}>{error.message}</td>
                 </tr>
               )
             }
@@ -185,7 +185,7 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
             if (typeof playlists === 'undefined') {
               return (
                 <tr>
-                  <td colSpan={4}>{loadingString}</td>
+                  <td colSpan={5}>{loadingString}</td>
                 </tr>
               )
             }
@@ -193,7 +193,7 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
             if (playlists.length === 0) {
               return (
                 <tr>
-                  <td colSpan={4}>There are no playlists.</td>
+                  <td colSpan={5}>There are no playlists.</td>
                 </tr>
               )
             }
@@ -206,6 +206,14 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
                 <td>{o.title}</td>
                 <td>{o.artist}</td>
                 <td>{o.album}</td>
+                <td>
+                  <button type='button'>
+                    &times;
+                  </button>
+                  <button type='button'>
+                    &rarr;
+                  </button>
+                </td>
               </tr>
             ))
           })()}
