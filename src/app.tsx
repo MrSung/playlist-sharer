@@ -1,10 +1,17 @@
 import React, { createContext } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import { Home } from './components/pages'
 import * as db from './db'
 import * as hooks from './hooks'
 
-export const AuthApp: React.FC = () => <Home />
+export const AuthApp: React.FC = () => (
+  <BrowserRouter>
+    <Switch>
+      <Route exact path='/' component={Home} />
+    </Switch>
+  </BrowserRouter>
+)
 
 export const UnAuthApp: React.FC = () => {
   const onClickSignInWithGoogle = () => {
