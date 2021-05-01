@@ -3,6 +3,7 @@ import useSWR, { mutate } from 'swr'
 
 import * as db from './db'
 import * as hooks from './hooks'
+import { deletePlaylist } from './db/index'
 
 interface IInitialFormState {
   title: string
@@ -74,10 +75,7 @@ interface IAuthAppProps {
 
 export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
   const [formState, dispatch] = useReducer(reducer, initialFormState)
-  const { data: playlists, error } = useSWR(
-    db.COLLECTION_ID,
-    db.getPlaylists
-  )
+  const { data: playlists, error } = useSWR(db.COLLECTION_ID, db.getPlaylists)
 
   const onClickSignOut = () => {
     db.signOut()
@@ -87,7 +85,8 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
     <div>
       <h1>Playlist Sharer</h1>
       <p>
-        Playlist Sharer is a social app that enables you to share playlists according to your favorite song with friends in realtime.
+        Playlist Sharer is a social app that enables you to share playlists
+        according to your favorite song with friends in realtime.
       </p>
       <button type='button' onClick={onClickSignOut}>
         Sign Out
@@ -207,12 +206,15 @@ export const AuthApp: React.FC<IAuthAppProps> = ({ user, loadingString }) => {
                 <td>{o.artist}</td>
                 <td>{o.album}</td>
                 <td>
-                  <button type='button'>
+                  <button
+                    type='button'
+                    onClick={async () => {
+                      await deletePlaylist(o.id)
+                      await mutate(db.COLLECTION_ID)
+                    }}>
                     &times;
                   </button>
-                  <button type='button'>
-                    &rarr;
-                  </button>
+                  <button type='button'>&rarr;</button>
                 </td>
               </tr>
             ))

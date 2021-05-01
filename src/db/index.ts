@@ -83,3 +83,7 @@ export const createPlaylist = async ({
     },
   })
 }
+
+export const deletePlaylist = async (listId: string): Promise<void> => {
+  await db.collection(COLLECTION_ID).doc(listId).delete()
+}
