@@ -21,6 +21,7 @@ enum ActionType {
   SET_TITLE = 'SET_TITLE',
   SET_ARTIST = 'SET_ARTIST',
   SET_ALBUM = 'SET_ALBUM',
+  RESET_ITEM = 'RESET_ITEM',
 }
 
 interface ISetTitle {
@@ -44,7 +45,11 @@ interface ISetAlbum {
   }
 }
 
-type Action = ISetTitle | ISetArtist | ISetAlbum
+interface IResetItem {
+  type: ActionType.RESET_ITEM
+}
+
+type Action = ISetTitle | ISetArtist | ISetAlbum | IResetItem
 
 const reducer: React.Reducer<IInitialFormState, Action> = (state, action) => {
   switch (action.type) {
@@ -62,6 +67,13 @@ const reducer: React.Reducer<IInitialFormState, Action> = (state, action) => {
       return {
         ...state,
         album: action.payload.album,
+      }
+    case ActionType.RESET_ITEM:
+      return {
+        ...state,
+        title: '',
+        artist: '',
+        album: '',
       }
     default:
       throw new Error()
@@ -160,6 +172,10 @@ export const Home: React.FC = () => {
               },
             })
             await mutate(db.COLLECTION_ID)
+
+            dispatch({
+              type: ActionType.RESET_ITEM,
+            })
           }}
           style={{ marginBottom: '10px' }}>
           Add song
