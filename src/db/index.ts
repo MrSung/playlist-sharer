@@ -44,7 +44,7 @@ export const signOut = async (): Promise<void> => {
   window.location.reload()
 }
 
-interface IPlaylistsItem {
+interface ISong {
   album: string
   artist: string
   // dateAdded: {
@@ -54,6 +54,10 @@ interface IPlaylistsItem {
   id: string
   index: number
   title: string
+}
+
+interface IPlaylistsItem extends ISong {
+  songs: ISong[]
 }
 
 export type Playlists = IPlaylistsItem[]

@@ -147,6 +147,7 @@ export const Form: React.FC = () => {
                 album: formState.album,
                 artist: formState.artist,
                 title: formState.title,
+                songs: [],
               },
             })
             await mutate(db.COLLECTION_ID)

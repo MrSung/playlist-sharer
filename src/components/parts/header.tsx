@@ -22,7 +22,8 @@ export const Header: React.FC = () => {
               ev.preventDefault()
 
               db.signOut()
-            }}>
+            }}
+            style={{ marginLeft: 'auto' }}>
             Sign Out
           </a>
         </div>
