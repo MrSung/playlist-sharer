@@ -1,8 +1,9 @@
 import React, { useContext, useReducer } from 'react'
-import useSWR, { mutate } from 'swr'
+import { mutate } from 'swr'
 
 import { UserContext } from 'src/app'
 import * as db from 'src/db'
+import { useGetPlaylists } from 'src/hooks'
 
 interface IInitialFormState {
   title: string
@@ -83,7 +84,7 @@ export const Form: React.FC = () => {
   const [formState, dispatch] = useReducer(reducer, initialFormState)
   const user = useContext(UserContext)
 
-  const { data: playlists } = useSWR(db.COLLECTION_ID, db.getPlaylists)
+  const { playlists } = useGetPlaylists()
 
   return (
     <>
