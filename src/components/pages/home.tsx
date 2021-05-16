@@ -1,5 +1,5 @@
 import React, { useContext, useReducer } from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 
 import { UserContext } from 'src/app'
@@ -82,6 +82,7 @@ const reducer: React.Reducer<IInitialFormState, Action> = (state, action) => {
 }
 
 export const Home: React.FC = () => {
+  const history = useHistory()
   const user = useContext(UserContext)
   const [formState, dispatch] = useReducer(reducer, initialFormState)
 
@@ -234,8 +235,12 @@ export const Home: React.FC = () => {
                       }}>
                       &times;
                     </button>
-                    <button type='button'>
-                      <Link to={`/playlist/${o.id}`}>&rarr;</Link>
+                    <button
+                      type='button'
+                      onClick={() => {
+                        history.push(`/playlist/${o.id}`)
+                      }}>
+                      &rarr;
                     </button>
                   </td>
                 </tr>
