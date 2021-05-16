@@ -1,4 +1,5 @@
 import React, { useContext, useReducer } from 'react'
+import { Link } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 
 import { UserContext } from 'src/app'
@@ -235,7 +236,9 @@ export const Home: React.FC = () => {
                       }}>
                       &times;
                     </button>
-                    <button type='button'>&rarr;</button>
+                    <button type='button'>
+                      <Link to={`/playlist/${o.id}`}>&rarr;</Link>
+                    </button>
                   </td>
                 </tr>
               ))
