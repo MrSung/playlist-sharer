@@ -218,27 +218,27 @@ export const Home: React.FC = () => {
               )
             }
 
-            const sorted = playlists.sort((a, b) => a.index - b.index)
-
-            return sorted.map((o) => (
-              <tr key={o.id}>
-                <td>{o.index}</td>
-                <td>{o.title}</td>
-                <td>{o.artist}</td>
-                <td>{o.album}</td>
-                <td>
-                  <button
-                    type='button'
-                    onClick={async () => {
-                      await db.deletePlaylist(o.id)
-                      await mutate(db.COLLECTION_ID)
-                    }}>
-                    &times;
-                  </button>
-                  <button type='button'>&rarr;</button>
-                </td>
-              </tr>
-            ))
+            return playlists
+              .sort((a, b) => a.index - b.index)
+              .map((o) => (
+                <tr key={o.id}>
+                  <td>{o.index}</td>
+                  <td>{o.title}</td>
+                  <td>{o.artist}</td>
+                  <td>{o.album}</td>
+                  <td>
+                    <button
+                      type='button'
+                      onClick={async () => {
+                        await db.deletePlaylist(o.id)
+                        await mutate(db.COLLECTION_ID)
+                      }}>
+                      &times;
+                    </button>
+                    <button type='button'>&rarr;</button>
+                  </td>
+                </tr>
+              ))
           })()}
         </tbody>
       </table>
