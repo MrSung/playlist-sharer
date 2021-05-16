@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import useSWR from 'swr'
 
 import * as db from '../db'
 
@@ -61,5 +62,15 @@ export const useUser = (): IUseUserReturnType => {
   return {
     isLoading,
     user,
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const useGetPlaylists = () => {
+  const { data: playlists, error } = useSWR(db.COLLECTION_ID, db.getPlaylists)
+
+  return {
+    playlists,
+    error,
   }
 }
