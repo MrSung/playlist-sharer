@@ -89,14 +89,6 @@ export const Home: React.FC = () => {
 
   const loadingString = useLoading()
 
-  const handleClickSignOut = (
-    ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    ev.preventDefault()
-
-    db.signOut()
-  }
-
   return (
     <div>
       <h1>Playlist Sharer</h1>
@@ -105,7 +97,13 @@ export const Home: React.FC = () => {
         according to your favorite song with friends in realtime.
       </p>
       <div style={{ textAlign: 'right' }}>
-        <a href='' onClick={handleClickSignOut}>
+        <a
+          href=''
+          onClick={(ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+            ev.preventDefault()
+
+            db.signOut()
+          }}>
           Sign Out
         </a>
       </div>
