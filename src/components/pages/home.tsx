@@ -4,14 +4,12 @@ import { mutate } from 'swr'
 
 import * as db from 'src/db'
 import { useLoading, useGetPlaylists } from 'src/hooks'
-import { Header } from 'src/components/parts/header'
-import { Form } from 'src/components/parts/form'
+import { Header, Form } from 'src/components/parts'
 
 export const Home: React.FC = () => {
   const history = useHistory()
 
   const { playlists, error } = useGetPlaylists()
-
   const loadingString = useLoading()
 
   return (
