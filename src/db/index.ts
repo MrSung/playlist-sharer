@@ -22,6 +22,7 @@ const auth = firebaseApp.auth()
 const db = firebaseApp.firestore()
 
 export const PLAYLISTS = 'playlists'
+export const SONGS = 'songs'
 
 export const signInWithGoogle = async (): Promise<void> => {
   const provider = new firebase.auth.GoogleAuthProvider()
@@ -67,6 +68,17 @@ export const getPlaylists = async (): Promise<Playlists> => {
   const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 
   return data as Playlists
+}
+
+export const getPlaylistSongs = async (docId: string): Promise<ISong[]> => {
+  const snapshot = await db
+    .collection(PLAYLISTS)
+    .doc(docId)
+    .collection(SONGS)
+    .get()
+  const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+
+  return data as ISong[]
 }
 
 interface ICreatePlaylistArgs {
