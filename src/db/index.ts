@@ -21,7 +21,7 @@ const firebaseApp =
 const auth = firebaseApp.auth()
 const db = firebaseApp.firestore()
 
-export const COLLECTION_ID = 'playlists'
+export const PLAYLISTS = 'playlists'
 
 export const signInWithGoogle = async (): Promise<void> => {
   const provider = new firebase.auth.GoogleAuthProvider()
@@ -63,7 +63,7 @@ interface IPlaylistsItem extends ISong {
 export type Playlists = IPlaylistsItem[]
 
 export const getPlaylists = async (): Promise<Playlists> => {
-  const snapshot = await db.collection(COLLECTION_ID).get()
+  const snapshot = await db.collection(PLAYLISTS).get()
   const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 
   return data as Playlists
@@ -78,7 +78,7 @@ export const createPlaylist = async ({
   item,
   user,
 }: ICreatePlaylistArgs): Promise<void> => {
-  await db.collection(COLLECTION_ID).add({
+  await db.collection(PLAYLISTS).add({
     ...item,
     dateAdded: firebase.firestore.FieldValue.serverTimestamp(),
     user: {
@@ -89,5 +89,5 @@ export const createPlaylist = async ({
 }
 
 export const deletePlaylist = async (listId: string): Promise<void> => {
-  await db.collection(COLLECTION_ID).doc(listId).delete()
+  await db.collection(PLAYLISTS).doc(listId).delete()
 }

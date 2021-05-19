@@ -151,7 +151,7 @@ export const Form: React.FC = () => {
                 songs: [],
               },
             })
-            await mutate(db.COLLECTION_ID)
+            await mutate(db.PLAYLISTS)
 
             dispatch({
               type: ActionType.RESET_ITEM,

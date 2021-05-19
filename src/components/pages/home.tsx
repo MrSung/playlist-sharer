@@ -65,7 +65,7 @@ export const Home: React.FC = () => {
                       type='button'
                       onClick={async () => {
                         await db.deletePlaylist(o.id)
-                        await mutate(db.COLLECTION_ID)
+                        await mutate(db.PLAYLISTS)
                       }}>
                       &times;
                     </button>
