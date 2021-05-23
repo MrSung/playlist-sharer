@@ -57,11 +57,7 @@ interface ISong {
   title: string
 }
 
-interface IPlaylistsItem extends ISong {
-  songs: ISong[]
-}
-
-export type Playlists = IPlaylistsItem[]
+export type Playlists = ISong[]
 
 export const getPlaylists = async (): Promise<Playlists> => {
   const snapshot = await db.collection(PLAYLISTS).get()
@@ -82,7 +78,7 @@ export const getPlaylistSongs = async (docId: string): Promise<ISong[]> => {
 }
 
 interface ICreatePlaylistArgs {
-  item: Omit<IPlaylistsItem, 'id'>
+  item: Omit<ISong, 'id'>
   user: firebase.User
 }
 
@@ -100,6 +96,31 @@ export const createPlaylist = async ({
   })
 }
 
-export const deletePlaylist = async (listId: string): Promise<void> => {
-  await db.collection(PLAYLISTS).doc(listId).delete()
+interface ICreatePlaylistSongsArgs {
+  docId: string
+  item: Omit<ISong, 'id'>
+  user: firebase.User
+}
+
+export const createPlaylistSongs = async ({
+  docId,
+  item,
+  user,
+}: ICreatePlaylistSongsArgs): Promise<void> => {
+  await db
+    .collection(PLAYLISTS)
+    .doc(docId)
+    .collection(SONGS)
+    .add({
+      ...item,
+      dateAdded: firebase.firestore.FieldValue.serverTimestamp(),
+      user: {
+        id: user.uid,
+        username: user.displayName,
+      },
+    })
+}
+
+export const deletePlaylist = async (docId: string): Promise<void> => {
+  await db.collection(PLAYLISTS).doc(docId).delete()
 }

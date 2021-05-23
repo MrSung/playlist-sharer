@@ -6,6 +6,7 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "deploy": "firebase deploy --only hosting:playlist-sharer",
+    "tsc": "tsc",
     "eslint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix",
     "prettier:fix": "prettier --write .",
     "postinstall": "typesync"

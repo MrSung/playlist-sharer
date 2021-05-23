@@ -4,7 +4,7 @@ import { mutate } from 'swr'
 
 import * as db from 'src/db'
 import { useLoading, useGetPlaylists } from 'src/hooks'
-import { Header, Form } from 'src/components/parts'
+import { Header, PlaylistsForm } from 'src/components/parts'
 
 export const Home: React.FC = () => {
   const history = useHistory()
@@ -15,7 +15,7 @@ export const Home: React.FC = () => {
   return (
     <div>
       <Header />
-      <Form />
+      <PlaylistsForm />
       <table className='table'>
         <thead>
           <tr>

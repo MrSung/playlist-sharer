@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { RootState } from 'src/app/store'
+
 export interface ISongsFormState {
   title: string
   artist: string
@@ -34,3 +36,5 @@ export const songsFormSlice = createSlice({
 })
 
 export const { actions, reducer } = songsFormSlice
+
+export const songsFormSelector = (state: RootState) => state.songsForm

@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useLoading, useGetPlaylistSongs } from 'src/hooks'
-import { Header, Form } from 'src/components/parts'
+import { Header, SongsForm } from 'src/components/parts'
 
 export const ListItem: React.FC = () => {
   const { id } = useParams<{ id: string }>()
@@ -13,7 +13,7 @@ export const ListItem: React.FC = () => {
   return (
     <div>
       <Header />
-      <Form />
+      <SongsForm playlistId={id} />
       <p>Showing playlist id: {id}</p>
       <table className='table'>
         <thead>
