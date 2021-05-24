@@ -3,6 +3,10 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 
+import * as dbType from './type'
+
+export * from './type'
+
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyCUEo7ENYazX70RRKrExyYzS9I1p-El-VY',
@@ -31,10 +35,8 @@ export const signInWithGoogle = async (): Promise<void> => {
   window.location.reload()
 }
 
-export type User = firebase.User | null
-
 export const onAuthStateChanged = (
-  cb: (user: User) => void
+  cb: (user: dbType.User) => void
 ): firebase.Unsubscribe => {
   return auth.onAuthStateChanged(cb)
 }
@@ -45,28 +47,16 @@ export const signOut = async (): Promise<void> => {
   window.location.reload()
 }
 
-interface ISong {
-  album: string
-  artist: string
-  // dateAdded: {
-  //   nanoseconds: number
-  //   seconds: number
-  // }
-  id: string
-  index: number
-  title: string
-}
-
-export type Playlists = ISong[]
-
-export const getPlaylists = async (): Promise<Playlists> => {
+export const getPlaylists = async (): Promise<dbType.Playlists> => {
   const snapshot = await db.collection(PLAYLISTS).get()
   const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 
-  return data as Playlists
+  return data as dbType.Playlists
 }
 
-export const getPlaylistSongs = async (docId: string): Promise<ISong[]> => {
+export const getPlaylistSongs = async (
+  docId: string
+): Promise<dbType.Playlists> => {
   const snapshot = await db
     .collection(PLAYLISTS)
     .doc(docId)
@@ -74,18 +64,13 @@ export const getPlaylistSongs = async (docId: string): Promise<ISong[]> => {
     .get()
   const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 
-  return data as ISong[]
-}
-
-interface ICreatePlaylistArgs {
-  item: Omit<ISong, 'id'>
-  user: firebase.User
+  return data as dbType.Playlists
 }
 
 export const createPlaylist = async ({
   item,
   user,
-}: ICreatePlaylistArgs): Promise<void> => {
+}: dbType.ICreatePlaylistArgs): Promise<void> => {
   await db.collection(PLAYLISTS).add({
     ...item,
     dateAdded: firebase.firestore.FieldValue.serverTimestamp(),
@@ -96,17 +81,11 @@ export const createPlaylist = async ({
   })
 }
 
-interface ICreatePlaylistSongsArgs {
-  docId: string
-  item: Omit<ISong, 'id'>
-  user: firebase.User
-}
-
 export const createPlaylistSongs = async ({
   docId,
   item,
   user,
-}: ICreatePlaylistSongsArgs): Promise<void> => {
+}: dbType.ICreatePlaylistSongsArgs): Promise<void> => {
   await db
     .collection(PLAYLISTS)
     .doc(docId)
@@ -123,4 +102,13 @@ export const createPlaylistSongs = async ({
 
 export const deletePlaylist = async (docId: string): Promise<void> => {
   await db.collection(PLAYLISTS).doc(docId).delete()
+}
+
+export const deletePlaylistSongs = async (docId: string, songId: string) => {
+  await db
+    .collection(PLAYLISTS)
+    .doc(docId)
+    .collection(SONGS)
+    .doc(songId)
+    .delete()
 }
