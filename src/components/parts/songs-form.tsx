@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from 'src/app/hooks'
 import {
   songsFormSelector,
   actions,
+  isSongsFormNotFilledSelector,
 } from 'src/features/songs-form/songs-form-slice'
 
 interface ISongsFormProps {
@@ -18,6 +19,7 @@ export const SongsForm: React.FC<ISongsFormProps> = ({ playlistId }) => {
   const user = useContext(UserContext)
   const dispatch = useAppDispatch()
   const songsForm = useAppSelector(songsFormSelector)
+  const isSongsFormNotFilled = useAppSelector(isSongsFormNotFilledSelector)
 
   const { songs } = useGetPlaylistSongs(playlistId)
 
@@ -81,6 +83,7 @@ export const SongsForm: React.FC<ISongsFormProps> = ({ playlistId }) => {
 
             dispatch(actions.resetForm())
           }}
+          disabled={isSongsFormNotFilled}
           style={{ marginBottom: '10px' }}>
           Add song
         </button>

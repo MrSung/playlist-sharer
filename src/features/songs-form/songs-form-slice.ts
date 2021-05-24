@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 import { RootState } from 'src/app/store'
 
@@ -38,3 +38,8 @@ export const songsFormSlice = createSlice({
 export const { actions, reducer } = songsFormSlice
 
 export const songsFormSelector = (state: RootState) => state.songsForm
+
+export const isSongsFormNotFilledSelector = createSelector(
+  songsFormSelector,
+  (state) => state.title === '' || state.artist === '' || state.album === ''
+)
