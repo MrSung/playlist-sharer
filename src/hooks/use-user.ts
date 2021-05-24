@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import * as db from '../db'
+import * as db from 'src/db'
 
 interface IUseUserReturnType {
   isLoading: boolean
