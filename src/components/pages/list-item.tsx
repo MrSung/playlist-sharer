@@ -1,20 +1,22 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { mutate } from 'swr'
 
+import * as db from 'src/db'
 import { useLoading, useGetPlaylistSongs } from 'src/hooks'
 import { Header, SongsForm } from 'src/components/parts'
 
 export const ListItem: React.FC = () => {
-  const { id } = useParams<{ id: string }>()
+  const { id: playlistId } = useParams<{ id: string }>()
 
-  const { songs, error } = useGetPlaylistSongs(id)
+  const { songs, error } = useGetPlaylistSongs(playlistId)
   const loadingString = useLoading()
 
   return (
     <div>
       <Header />
-      <SongsForm playlistId={id} />
-      <p>Showing playlist id: {id}</p>
+      <SongsForm playlistId={playlistId} />
+      <p>Showing playlist id: {playlistId}</p>
       <table className='table'>
         <thead>
           <tr>
@@ -63,7 +65,8 @@ export const ListItem: React.FC = () => {
                     <button
                       type='button'
                       onClick={async () => {
-                        // TODO: delete song
+                        await db.deletePlaylistSongs(playlistId, o.id)
+                        await mutate(db.SONGS)
                       }}>
                       &times;
                     </button>
