@@ -2,6 +2,14 @@ import firebase from 'firebase/app'
 
 export type User = firebase.User | null
 
+export interface IUser {
+  customUsername: string
+  id: string
+  username: string
+}
+
+export type Users = IUser[]
+
 export interface ISongGet {
   album: string
   artist: string

@@ -25,7 +25,7 @@ const firebaseApp =
 const auth = firebaseApp.auth()
 const db = firebaseApp.firestore()
 
-export const USER = 'user'
+export const USERS = 'users'
 export const PLAYLISTS = 'playlists'
 export const SONGS = 'songs'
 
@@ -48,9 +48,16 @@ export const signOut = async (): Promise<void> => {
   window.location.reload()
 }
 
+export const getUsers = async (): Promise<dbType.Users> => {
+  const snapshot = await db.collection(USERS).get()
+  const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+
+  return data as dbType.Users
+}
+
 export const getPlaylists = async (): Promise<dbType.Playlists> => {
   const snapshot = await db.collection(PLAYLISTS).get()
-  const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+  const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
   return data as dbType.Playlists
 }
@@ -63,7 +70,7 @@ export const getPlaylistSongs = async (
     .doc(docId)
     .collection(SONGS)
     .get()
-  const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+  const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
   return data as dbType.Playlists
 }
@@ -72,7 +79,7 @@ export const createUser = async ({
   user,
   customUsername,
 }: dbType.ICreateUserArgs): Promise<void> => {
-  await db.collection(USER).add({
+  await db.collection(USERS).add({
     dateAdded: firebase.firestore.FieldValue.serverTimestamp(),
     user: {
       id: user.uid,
