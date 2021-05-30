@@ -27,6 +27,11 @@ export interface ISongPost {
   title: string
 }
 
+export interface ICreateUserArgs {
+  user: firebase.User
+  customUsername: string
+}
+
 export interface ICreatePlaylistArgs {
   item: ISongPost
   user: firebase.User

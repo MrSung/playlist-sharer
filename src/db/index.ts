@@ -25,6 +25,7 @@ const firebaseApp =
 const auth = firebaseApp.auth()
 const db = firebaseApp.firestore()
 
+export const USER = 'user'
 export const PLAYLISTS = 'playlists'
 export const SONGS = 'songs'
 
@@ -65,6 +66,20 @@ export const getPlaylistSongs = async (
   const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 
   return data as dbType.Playlists
+}
+
+export const createUser = async ({
+  user,
+  customUsername,
+}: dbType.ICreateUserArgs): Promise<void> => {
+  await db.collection(USER).add({
+    dateAdded: firebase.firestore.FieldValue.serverTimestamp(),
+    user: {
+      id: user.uid,
+      username: user.displayName,
+      customUsername,
+    },
+  })
 }
 
 export const createPlaylist = async ({

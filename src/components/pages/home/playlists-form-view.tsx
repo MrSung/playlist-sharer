@@ -13,7 +13,8 @@ export const PlaylistsFormView: React.FC = () => {
   const loadingString = useLoading()
 
   return (
-    <>
+    <div>
+      <h2>Add Song</h2>
       <PlaylistsForm />
       <table className='table'>
         <thead>
@@ -83,6 +84,6 @@ export const PlaylistsFormView: React.FC = () => {
           })()}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }
