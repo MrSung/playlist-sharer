@@ -1,7 +1,7 @@
 import React, { createContext } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import { Home, ListItem } from 'src/components/pages'
+import { Home, List } from 'src/components/pages'
 import * as db from 'src/db'
 import * as hooks from 'src/hooks'
 
@@ -9,7 +9,7 @@ export const AuthApp: React.FC = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path='/' component={Home} />
-      <Route path='/playlist/:id' component={ListItem} />
+      <Route path='/playlist/:id' component={List} />
     </Switch>
   </BrowserRouter>
 )
