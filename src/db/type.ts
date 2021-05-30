@@ -2,7 +2,7 @@ import firebase from 'firebase/app'
 
 export type User = firebase.User | null
 
-export interface ISong {
+export interface ISongGet {
   album: string
   artist: string
   // dateAdded: {
@@ -12,17 +12,28 @@ export interface ISong {
   id: string
   index: number
   title: string
+  user: {
+    id: string
+    username: string
+  }
 }
 
-export type Playlists = ISong[]
+export type Playlists = ISongGet[]
+
+export interface ISongPost {
+  album: string
+  artist: string
+  index: number
+  title: string
+}
 
 export interface ICreatePlaylistArgs {
-  item: Omit<ISong, 'id'>
+  item: ISongPost
   user: firebase.User
 }
 
 export interface ICreatePlaylistSongsArgs {
   docId: string
-  item: Omit<ISong, 'id'>
+  item: ISongPost
   user: firebase.User
 }

@@ -23,6 +23,7 @@ export const Home: React.FC = () => {
             <th>title</th>
             <th>artist</th>
             <th>album</th>
+            <th>user</th>
             <th />
           </tr>
         </thead>
@@ -60,6 +61,7 @@ export const Home: React.FC = () => {
                   <td>{o.title}</td>
                   <td>{o.artist}</td>
                   <td>{o.album}</td>
+                  <td>{o.user.username}</td>
                   <td>
                     <button
                       type='button'
