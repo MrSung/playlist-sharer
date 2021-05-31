@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react'
-// import debounce from 'lodash.debounce'
+import React, { useState, useContext } from 'react'
 
 import { UserContext } from 'src/app'
 import * as db from 'src/db'
@@ -7,7 +6,6 @@ import * as db from 'src/db'
 export const UsernameForm: React.FC = () => {
   const [customUsername, setCustomUsername] = useState('')
   const [isValid, setIsValid] = useState(false)
-  // const [isLoading, setIsLoading] = useState(false)
 
   const user = useContext(UserContext)
 
@@ -20,21 +18,6 @@ export const UsernameForm: React.FC = () => {
       user,
       customUsername,
     })
-
-    // // Create refs for both documents
-    // const userDoc = firestore.doc(user === null ? '' : `users/${user.uid}`)
-    // const usernameDoc = firestore.doc(`usernames/${customUsername}`)
-
-    // // Commit both docs together as a batch write.
-    // const batch = firestore.batch()
-    // batch.set(userDoc, {
-    //   username: customUsername,
-    //   photoURL: user?.photoURL,
-    //   displayName: user?.displayName,
-    // })
-    // batch.set(usernameDoc, { uid: user?.uid })
-
-    // await batch.commit()
   }
 
   const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {

@@ -48,11 +48,11 @@ export const signOut = async (): Promise<void> => {
   window.location.reload()
 }
 
-export const getUsers = async (): Promise<dbType.Users> => {
+export const getUsers = async (): Promise<dbType.IUserGet[]> => {
   const snapshot = await db.collection(USERS).get()
   const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
-  return data as dbType.Users
+  return data as dbType.IUserGet[]
 }
 
 export const getPlaylists = async (): Promise<dbType.Playlists> => {

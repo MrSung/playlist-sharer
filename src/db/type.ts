@@ -10,6 +10,15 @@ export interface IUser {
 
 export type Users = IUser[]
 
+export interface IUserGet {
+  // dateAdded: {
+  //   nanoseconds: number
+  //   seconds: number
+  // }
+  id: string
+  user: IUser
+}
+
 export interface ISongGet {
   album: string
   artist: string
