@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react'
 
 import { UserContext } from 'src/app'
-import { IUserGet } from 'src/db'
+import * as db from 'src/db'
 import { useGetUsers } from 'src/hooks'
 import { Header, UsernameForm } from 'src/components/parts'
 import { PlaylistsFormView } from './playlists-form-view'
 
 export const Home: React.FC = () => {
   const user = useContext(UserContext)
-  const [matchedUser, setMatchedUser] = useState<IUserGet | undefined>(
+  const [matchedUser, setMatchedUser] = useState<db.IUserGet | undefined>(
     undefined
   )
   const { users, error } = useGetUsers()
@@ -25,12 +25,17 @@ export const Home: React.FC = () => {
   return (
     <div>
       <Header />
-      {error && <p>Failed to fetch users</p>}
-      {typeof matchedUser === 'undefined' ? (
-        <UsernameForm />
-      ) : (
-        <PlaylistsFormView />
-      )}
+      {(() => {
+        if (error) {
+          return <p>Failed to fetch users</p>
+        }
+
+        if (typeof matchedUser === 'undefined') {
+          return <UsernameForm />
+        }
+
+        return <PlaylistsFormView users={users} />
+      })()}
     </div>
   )
 }

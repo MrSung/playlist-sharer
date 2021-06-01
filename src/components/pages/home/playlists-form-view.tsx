@@ -6,7 +6,13 @@ import * as db from 'src/db'
 import { useLoading, useGetPlaylists } from 'src/hooks'
 import { PlaylistsForm } from 'src/components/parts'
 
-export const PlaylistsFormView: React.FC = () => {
+interface IPlaylistsFormViewProps {
+  users: db.IUserGet[] | undefined
+}
+
+export const PlaylistsFormView: React.FC<IPlaylistsFormViewProps> = ({
+  users,
+}) => {
   const history = useHistory()
 
   const { playlists, error } = useGetPlaylists()
@@ -61,7 +67,12 @@ export const PlaylistsFormView: React.FC = () => {
                   <td>{o.title}</td>
                   <td>{o.artist}</td>
                   <td>{o.album}</td>
-                  <td>{o.user.username}</td>
+                  <td>
+                    {
+                      users?.find((u) => u.user.id === o.user.id)?.user
+                        .customUsername
+                    }
+                  </td>
                   <td>
                     <button
                       type='button'

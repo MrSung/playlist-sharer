@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom'
 import { mutate } from 'swr'
 
 import * as db from 'src/db'
-import { useLoading, useGetPlaylistSongs } from 'src/hooks'
+import { useGetUsers, useGetPlaylistSongs, useLoading } from 'src/hooks'
 import { Header, SongsForm } from 'src/components/parts'
 
 export const List: React.FC = () => {
   const { id: playlistId } = useParams<{ id: string }>()
 
-  const { songs, error } = useGetPlaylistSongs(playlistId)
+  const { users, error: usersError } = useGetUsers()
+  const { songs, error: playlistsSongsError } = useGetPlaylistSongs(playlistId)
   const loadingString = useLoading()
 
   return (
@@ -30,15 +31,23 @@ export const List: React.FC = () => {
         </thead>
         <tbody>
           {(() => {
-            if (error) {
+            if (usersError) {
               return (
                 <tr>
-                  <td colSpan={5}>{error.message}</td>
+                  <td colSpan={5}>{usersError.message}</td>
                 </tr>
               )
             }
 
-            if (typeof songs === 'undefined') {
+            if (playlistsSongsError) {
+              return (
+                <tr>
+                  <td colSpan={5}>{playlistsSongsError.message}</td>
+                </tr>
+              )
+            }
+
+            if (typeof users === 'undefined' || typeof songs === 'undefined') {
               return (
                 <tr>
                   <td colSpan={5}>{loadingString}</td>
@@ -62,7 +71,12 @@ export const List: React.FC = () => {
                   <td>{o.title}</td>
                   <td>{o.artist}</td>
                   <td>{o.album}</td>
-                  <td>{o.user.username}</td>
+                  <td>
+                    {
+                      users?.find((u) => u.user.id === o.user.id)?.user
+                        .customUsername
+                    }
+                  </td>
                   <td>
                     <button
                       type='button'
