@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { mutate } from 'swr'
 
 import { UserContext } from 'src/app'
 import * as db from 'src/db'
@@ -18,6 +19,7 @@ export const UsernameForm = () => {
       user: loggedInUser,
       customUsername,
     })
+    await mutate(db.USERS)
   }
 
   const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
