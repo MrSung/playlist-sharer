@@ -75,10 +75,10 @@ export const getPlaylistSongs = async (
   return data as dbType.Playlists
 }
 
-export const createUser = async ({
+export const createCustomUser = async ({
   user,
   customUsername,
-}: dbType.ICreateUserArgs): Promise<void> => {
+}: dbType.ICreateCustomUserArgs): Promise<void> => {
   await db.collection(USERS).add({
     dateAdded: firebase.firestore.FieldValue.serverTimestamp(),
     user: {
@@ -122,11 +122,18 @@ export const createPlaylistSongs = async ({
     })
 }
 
+export const deleteCustomUser = async (docId: string): Promise<void> => {
+  await db.collection(USERS).doc(docId).delete()
+}
+
 export const deletePlaylist = async (docId: string): Promise<void> => {
   await db.collection(PLAYLISTS).doc(docId).delete()
 }
 
-export const deletePlaylistSongs = async (docId: string, songId: string) => {
+export const deletePlaylistSongs = async (
+  docId: string,
+  songId: string
+): Promise<void> => {
   await db
     .collection(PLAYLISTS)
     .doc(docId)

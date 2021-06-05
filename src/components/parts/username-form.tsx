@@ -5,10 +5,10 @@ import { UserContext } from 'src/app'
 import * as db from 'src/db'
 
 interface IUsernameFormProps {
-  registeredCustomUser: db.IUserGet | undefined | null
+  customUser: db.IUserGet | undefined | null
 }
 
-export const UsernameForm = ({ registeredCustomUser }: IUsernameFormProps) => {
+export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
   const [customUsername, setCustomUsername] = useState('')
   const [isValid, setIsValid] = useState(false)
 
@@ -19,7 +19,7 @@ export const UsernameForm = ({ registeredCustomUser }: IUsernameFormProps) => {
 
     if (loggedInUser === null) return
 
-    await db.createUser({
+    await db.createCustomUser({
       user: loggedInUser,
       customUsername,
     })
@@ -47,6 +47,15 @@ export const UsernameForm = ({ registeredCustomUser }: IUsernameFormProps) => {
     // }
   }
 
+  const onClick = async (user: db.IUserGet | null) => {
+    if (user === null) {
+      return
+    }
+
+    await db.deleteCustomUser(user.id)
+    await mutate(db.USERS)
+  }
+
   // const checkUsername = useCallback(
   //   debounce(async (usrName: string | null) => {
   //     if (usrName === null) {
@@ -70,7 +79,7 @@ export const UsernameForm = ({ registeredCustomUser }: IUsernameFormProps) => {
 
   return (
     <div>
-      {typeof registeredCustomUser === 'undefined' ? (
+      {typeof customUser === 'undefined' ? (
         <>
           <h2>Choose Username</h2>
           <form onSubmit={onSubmit} autoComplete='off'>
@@ -105,7 +114,14 @@ export const UsernameForm = ({ registeredCustomUser }: IUsernameFormProps) => {
       ) : (
         <>
           <h2>Registered Custom Username</h2>
-          <p>{registeredCustomUser?.user.customUsername}</p>
+          <div>
+            <span style={{ marginRight: '1em' }}>
+              {customUser?.user.customUsername}
+            </span>
+            <button type='button' onClick={() => onClick(customUser)}>
+              &times;
+            </button>
+          </div>
         </>
       )}
     </div>

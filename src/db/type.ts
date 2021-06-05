@@ -44,7 +44,7 @@ export interface ISongPost {
   title: string
 }
 
-export interface ICreateUserArgs {
+export interface ICreateCustomUserArgs {
   user: firebase.User
   customUsername: string
 }

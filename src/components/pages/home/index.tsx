@@ -27,7 +27,7 @@ export const Home = () => {
       {error ? (
         <ErrorMessage>Failed to fetch users</ErrorMessage>
       ) : (
-        <UsernameForm registeredCustomUser={matchedUser} />
+        <UsernameForm customUser={matchedUser} />
       )}
       <PlaylistsFormView users={users} />
     </div>
