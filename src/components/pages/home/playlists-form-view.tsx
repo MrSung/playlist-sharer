@@ -59,37 +59,38 @@ export const PlaylistsFormView = ({ users }: IPlaylistsFormViewProps) => {
 
             return playlists
               .sort((a, b) => a.index - b.index)
-              .map((o) => (
-                <tr key={o.id}>
-                  <td>{o.index}</td>
-                  <td>{o.title}</td>
-                  <td>{o.artist}</td>
-                  <td>{o.album}</td>
-                  <td>
-                    {
-                      users?.find((u) => u.user.id === o.user.id)?.user
-                        .customUsername
-                    }
-                  </td>
-                  <td>
-                    <button
-                      type='button'
-                      onClick={async () => {
-                        await db.deletePlaylist(o.id)
-                        await mutate(db.PLAYLISTS)
-                      }}>
-                      &times;
-                    </button>
-                    <button
-                      type='button'
-                      onClick={() => {
-                        history.push(`/playlist/${o.id}`)
-                      }}>
-                      &rarr;
-                    </button>
-                  </td>
-                </tr>
-              ))
+              .map((o) => {
+                const customUsername = users?.find(
+                  (u) => u.user.id === o.user.id
+                )?.user.customUsername
+
+                return (
+                  <tr key={o.id}>
+                    <td>{o.index}</td>
+                    <td>{o.title}</td>
+                    <td>{o.artist}</td>
+                    <td>{o.album}</td>
+                    <td>{customUsername ?? o.user.username}</td>
+                    <td>
+                      <button
+                        type='button'
+                        onClick={async () => {
+                          await db.deletePlaylist(o.id)
+                          await mutate(db.PLAYLISTS)
+                        }}>
+                        &times;
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => {
+                          history.push(`/playlist/${o.id}`)
+                        }}>
+                        &rarr;
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })
           })()}
         </tbody>
       </table>
