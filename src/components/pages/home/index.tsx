@@ -24,15 +24,11 @@ export const Home = () => {
   return (
     <div>
       <Header />
-      {(() => {
-        if (error) {
-          return <ErrorMessage>Failed to fetch users</ErrorMessage>
-        }
-
-        if (typeof matchedUser === 'undefined') {
-          return <UsernameForm />
-        }
-      })()}
+      {error ? (
+        <ErrorMessage>Failed to fetch users</ErrorMessage>
+      ) : (
+        <UsernameForm registeredCustomUser={matchedUser} />
+      )}
       <PlaylistsFormView users={users} />
     </div>
   )

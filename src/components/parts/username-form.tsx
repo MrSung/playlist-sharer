@@ -4,7 +4,11 @@ import { mutate } from 'swr'
 import { UserContext } from 'src/app'
 import * as db from 'src/db'
 
-export const UsernameForm = () => {
+interface IUsernameFormProps {
+  registeredCustomUser: db.IUserGet | undefined | null
+}
+
+export const UsernameForm = ({ registeredCustomUser }: IUsernameFormProps) => {
   const [customUsername, setCustomUsername] = useState('')
   const [isValid, setIsValid] = useState(false)
 
@@ -66,35 +70,44 @@ export const UsernameForm = () => {
 
   return (
     <div>
-      <h2>Choose Username</h2>
-      <form onSubmit={onSubmit} autoComplete='off'>
-        <input
-          name='username'
-          placeholder='Your custom username'
-          value={customUsername}
-          onChange={onChange}
-          style={{
-            display: 'inline-block',
-          }}
-        />
-        <button type='submit' className='btn-green' disabled={!isValid}>
-          Choose
-        </button>
-        {/* <UsernameMessage
-          username={customUsername}
-          isValid={isValid}
-          isLoading={isLoading}
-        /> */}
+      {typeof registeredCustomUser === 'undefined' ? (
+        <>
+          <h2>Choose Username</h2>
+          <form onSubmit={onSubmit} autoComplete='off'>
+            <input
+              name='username'
+              placeholder='Your custom username'
+              value={customUsername}
+              onChange={onChange}
+              style={{
+                display: 'inline-block',
+              }}
+            />
+            <button type='submit' className='btn-green' disabled={!isValid}>
+              Choose
+            </button>
+            {/* <UsernameMessage
+              username={customUsername}
+              isValid={isValid}
+              isLoading={isLoading}
+            /> */}
 
-        {/* <h3>Debug State</h3>
-        <div>
-          Username: {customUsername}
-          <br />
-          Loading: {isLoading.toString()}
-          <br />
-          Username Valid: {isValid.toString()}
-        </div> */}
-      </form>
+            {/* <h3>Debug State</h3>
+            <div>
+              Username: {customUsername}
+              <br />
+              Loading: {isLoading.toString()}
+              <br />
+              Username Valid: {isValid.toString()}
+            </div> */}
+          </form>
+        </>
+      ) : (
+        <>
+          <h2>Registered Custom Username</h2>
+          <p>{registeredCustomUser?.user.customUsername}</p>
+        </>
+      )}
     </div>
   )
 }
