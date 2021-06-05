@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { UserContext } from 'src/app'
 import * as db from 'src/db'
 import { useGetUsers } from 'src/hooks'
-import { Header, UsernameForm } from 'src/components/parts'
+import { Header, UsernameForm, ErrorMessage } from 'src/components/parts'
 import { PlaylistsFormView } from './playlists-form-view'
 
 export const Home = () => {
@@ -26,15 +26,14 @@ export const Home = () => {
       <Header />
       {(() => {
         if (error) {
-          return <p>Failed to fetch users</p>
+          return <ErrorMessage>Failed to fetch users</ErrorMessage>
         }
 
         if (typeof matchedUser === 'undefined') {
           return <UsernameForm />
         }
-
-        return <PlaylistsFormView users={users} />
       })()}
+      <PlaylistsFormView users={users} />
     </div>
   )
 }
