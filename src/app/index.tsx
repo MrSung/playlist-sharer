@@ -5,7 +5,7 @@ import { Home, List } from 'src/components/pages'
 import * as db from 'src/db'
 import * as hooks from 'src/hooks'
 
-export const AuthApp: React.FC = () => (
+export const AuthApp = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path='/' component={Home} />
@@ -14,7 +14,7 @@ export const AuthApp: React.FC = () => (
   </BrowserRouter>
 )
 
-export const UnAuthApp: React.FC = () => {
+export const UnAuthApp = () => {
   const onClickSignInWithGoogle = () => {
     db.signInWithGoogle()
   }
@@ -31,8 +31,8 @@ export const UnAuthApp: React.FC = () => {
 
 export const UserContext = createContext<db.User>(null)
 
-export const App: React.FC = () => {
-  const { isLoading, user } = hooks.useUser()
+export const App = () => {
+  const { isLoading, loggedInUser } = hooks.useLoggedInUser()
   const loadingString = hooks.useLoading()
 
   if (isLoading) {
@@ -40,8 +40,8 @@ export const App: React.FC = () => {
   }
 
   return (
-    <UserContext.Provider value={user}>
-      {user === null ? <UnAuthApp /> : <AuthApp />}
+    <UserContext.Provider value={loggedInUser}>
+      {loggedInUser === null ? <UnAuthApp /> : <AuthApp />}
     </UserContext.Provider>
   )
 }

@@ -10,9 +10,7 @@ interface IPlaylistsFormViewProps {
   users: db.IUserGet[] | undefined
 }
 
-export const PlaylistsFormView: React.FC<IPlaylistsFormViewProps> = ({
-  users,
-}) => {
+export const PlaylistsFormView = ({ users }: IPlaylistsFormViewProps) => {
   const history = useHistory()
 
   const { playlists, error } = useGetPlaylists()

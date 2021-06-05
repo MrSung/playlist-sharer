@@ -11,8 +11,8 @@ import {
   isPlaylistsFormNotFilledSelector,
 } from 'src/features/playlists-form/playlists-form-slice'
 
-export const PlaylistsForm: React.FC = () => {
-  const user = useContext(UserContext)
+export const PlaylistsForm = () => {
+  const loggedInUser = useContext(UserContext)
   const dispatch = useAppDispatch()
   const playlistsForm = useAppSelector(playlistsFormSelector)
   const isPlaylistsFormNotFilled = useAppSelector(
@@ -63,12 +63,12 @@ export const PlaylistsForm: React.FC = () => {
         <button
           type='button'
           onClick={async () => {
-            if (typeof playlists === 'undefined' || user === null) {
+            if (typeof playlists === 'undefined' || loggedInUser === null) {
               return
             }
 
             await db.createPlaylist({
-              user,
+              user: loggedInUser,
               item: {
                 index: playlists.length,
                 album: playlistsForm.album,

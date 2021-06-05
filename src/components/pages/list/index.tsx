@@ -6,7 +6,7 @@ import * as db from 'src/db'
 import { useGetUsers, useGetPlaylistSongs, useLoading } from 'src/hooks'
 import { Header, SongsForm } from 'src/components/parts'
 
-export const List: React.FC = () => {
+export const List = () => {
   const { id: playlistId } = useParams<{ id: string }>()
 
   const { users, error: usersError } = useGetUsers()

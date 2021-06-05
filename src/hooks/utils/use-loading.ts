@@ -7,7 +7,7 @@ enum LoadingString {
   ThreeDots = '...',
 }
 
-export const useLoading = (): string => {
+export const useLoading = () => {
   const [loadingString, setLoadingString] = useState<LoadingString>(
     LoadingString.Empty
   )

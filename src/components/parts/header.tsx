@@ -3,7 +3,7 @@ import { Link, useRouteMatch } from 'react-router-dom'
 
 import * as db from 'src/db'
 
-export const Header: React.FC = () => {
+export const Header = () => {
   const isPlaylistItemRoute = useRouteMatch('/playlist/:id')
 
   return (

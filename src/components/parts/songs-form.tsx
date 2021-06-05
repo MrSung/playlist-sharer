@@ -15,8 +15,8 @@ interface ISongsFormProps {
   playlistId: string
 }
 
-export const SongsForm: React.FC<ISongsFormProps> = ({ playlistId }) => {
-  const user = useContext(UserContext)
+export const SongsForm = ({ playlistId }: ISongsFormProps) => {
+  const loggedInUser = useContext(UserContext)
   const dispatch = useAppDispatch()
   const songsForm = useAppSelector(songsFormSelector)
   const isSongsFormNotFilled = useAppSelector(isSongsFormNotFilledSelector)
@@ -65,13 +65,13 @@ export const SongsForm: React.FC<ISongsFormProps> = ({ playlistId }) => {
         <button
           type='button'
           onClick={async () => {
-            if (typeof songs === 'undefined' || user === null) {
+            if (typeof songs === 'undefined' || loggedInUser === null) {
               return
             }
 
             await db.createPlaylistSongs({
               docId: playlistId,
-              user,
+              user: loggedInUser,
               item: {
                 index: songs.length,
                 album: songsForm.album,

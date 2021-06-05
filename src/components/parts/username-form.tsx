@@ -3,19 +3,19 @@ import React, { useState, useContext } from 'react'
 import { UserContext } from 'src/app'
 import * as db from 'src/db'
 
-export const UsernameForm: React.FC = () => {
+export const UsernameForm = () => {
   const [customUsername, setCustomUsername] = useState('')
   const [isValid, setIsValid] = useState(false)
 
-  const user = useContext(UserContext)
+  const loggedInUser = useContext(UserContext)
 
   const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault()
 
-    if (user === null) return
+    if (loggedInUser === null) return
 
     await db.createUser({
-      user,
+      user: loggedInUser,
       customUsername,
     })
   }
