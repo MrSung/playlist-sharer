@@ -8,9 +8,9 @@ import { PlaylistsFormView } from './playlists-form-view'
 
 export const Home = () => {
   const loggedInUser = useContext(UserContext)
-  const [matchedUser, setMatchedUser] = useState<db.IUserGet | undefined>(
-    undefined
-  )
+  const [matchedUser, setMatchedUser] = useState<
+    db.IUserGet | undefined | null
+  >(null)
   const { users, error } = useGetUsers()
 
   useEffect(() => {
