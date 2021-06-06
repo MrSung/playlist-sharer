@@ -3,6 +3,28 @@ import { mutate } from 'swr'
 
 import { UserContext } from 'src/app'
 import * as db from 'src/db'
+import { ErrorMessage } from './error-message'
+
+enum ValidationMessage {
+  EmptyMessage = 'custom username is empty!',
+  ShortMessage = 'custom username is too short!',
+  InvalidMessage = 'custom username is invalid!',
+}
+
+const validationMessageReducer = (val: string) => {
+  const re = /^(?=[a-zA-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/
+
+  switch (true) {
+    case val.length === 0:
+      return ValidationMessage.EmptyMessage
+    case val.length < 3:
+      return ValidationMessage.ShortMessage
+    case !re.test(val):
+      return ValidationMessage.InvalidMessage
+    default:
+      return undefined
+  }
+}
 
 interface IUsernameFormProps {
   customUser: db.IUserGet | undefined | null
@@ -11,6 +33,9 @@ interface IUsernameFormProps {
 export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
   const [customUsername, setCustomUsername] = useState('')
   const [isValid, setIsValid] = useState(false)
+  const [validationMessage, setValidationMessage] = useState<
+    string | undefined
+  >(undefined)
 
   const loggedInUser = useContext(UserContext)
 
@@ -30,21 +55,9 @@ export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
     const val = ev.target.value.toLowerCase()
 
     setCustomUsername(val)
-    setIsValid(val !== '')
-    // const re = /^(?=[a-zA-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/
 
-    // // Only set form value if length is < 3 OR it passes regex
-    // if (val.length < 3) {
-    //   setCustomUsername(val)
-    //   setIsLoading(false)
-    //   setIsValid(false)
-    // }
-
-    // if (re.test(val)) {
-    //   setCustomUsername(val)
-    //   setIsLoading(true)
-    //   setIsValid(false)
-    // }
+    setIsValid(false)
+    setValidationMessage(validationMessageReducer(val))
   }
 
   const onClick = async (user: db.IUserGet | null) => {
@@ -55,27 +68,6 @@ export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
     await db.deleteCustomUser(user.id)
     await mutate(db.USERS)
   }
-
-  // const checkUsername = useCallback(
-  //   debounce(async (usrName: string | null) => {
-  //     if (usrName === null) {
-  //       return
-  //     }
-
-  //     if (usrName.length >= 3) {
-  //       const ref = firestore.doc(`usernames/${usrName}`)
-  //       const { exists } = await ref.get()
-  //       console.log('Firestore read executed!')
-  //       setIsValid(!exists)
-  //       setIsLoading(false)
-  //     }
-  //   }, 500),
-  //   []
-  // )
-
-  // useEffect(() => {
-  //   checkUsername(customUsername)
-  // }, [customUsername, checkUsername])
 
   return (
     <div>
@@ -95,21 +87,10 @@ export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
             <button type='submit' className='btn-green' disabled={!isValid}>
               Choose
             </button>
-            {/* <UsernameMessage
-              username={customUsername}
-              isValid={isValid}
-              isLoading={isLoading}
-            /> */}
-
-            {/* <h3>Debug State</h3>
-            <div>
-              Username: {customUsername}
-              <br />
-              Loading: {isLoading.toString()}
-              <br />
-              Username Valid: {isValid.toString()}
-            </div> */}
           </form>
+          {typeof validationMessage !== 'undefined' && (
+            <ErrorMessage>{validationMessage}</ErrorMessage>
+          )}
         </>
       ) : (
         <>
