@@ -56,8 +56,19 @@ export const getUsers = async (): Promise<dbType.IUserGet[]> => {
   return data as dbType.IUserGet[]
 }
 
-export const getPlaylists = async (): Promise<dbType.Playlists> => {
-  const snapshot = await firestore.collection(PLAYLISTS).get()
+export const getPlaylists = async (
+  userId?: string
+): Promise<dbType.Playlists> => {
+  const playlistCollection = firestore.collection(PLAYLISTS)
+
+  if (typeof userId === 'undefined') {
+    const snapshot = await playlistCollection.get()
+    const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+
+    return data as dbType.Playlists
+  }
+
+  const snapshot = await playlistCollection.where('user.id', '==', userId).get()
   const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
   return data as dbType.Playlists
