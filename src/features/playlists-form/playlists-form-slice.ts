@@ -6,12 +6,14 @@ export interface IPlaylistsFormState {
   title: string
   artist: string
   album: string
+  comment: string
 }
 
 const initialState: IPlaylistsFormState = {
   title: '',
   artist: '',
   album: '',
+  comment: '',
 }
 
 export const playlistsFormSlice = createSlice({
@@ -27,10 +29,14 @@ export const playlistsFormSlice = createSlice({
     setAlbum: (state, action: PayloadAction<string>) => {
       state.album = action.payload
     },
+    setComment: (state, action: PayloadAction<string>) => {
+      state.comment = action.payload
+    },
     resetForm: (state) => {
       state.title = ''
       state.artist = ''
       state.album = ''
+      state.comment = ''
     },
   },
 })

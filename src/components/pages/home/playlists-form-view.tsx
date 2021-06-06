@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { useHistory } from 'react-router-dom'
 import { mutate } from 'swr'
 
@@ -36,7 +36,7 @@ export const PlaylistsFormView = ({ users }: IPlaylistsFormViewProps) => {
             if (error) {
               return (
                 <tr>
-                  <td colSpan={5}>{error.message}</td>
+                  <td colSpan={6}>{error.message}</td>
                 </tr>
               )
             }
@@ -44,7 +44,7 @@ export const PlaylistsFormView = ({ users }: IPlaylistsFormViewProps) => {
             if (typeof playlists === 'undefined') {
               return (
                 <tr>
-                  <td colSpan={5}>{loadingString}</td>
+                  <td colSpan={6}>{loadingString}</td>
                 </tr>
               )
             }
@@ -52,7 +52,7 @@ export const PlaylistsFormView = ({ users }: IPlaylistsFormViewProps) => {
             if (playlists.length === 0) {
               return (
                 <tr>
-                  <td colSpan={5}>There are no playlists.</td>
+                  <td colSpan={6}>There are no playlists.</td>
                 </tr>
               )
             }
@@ -65,30 +65,37 @@ export const PlaylistsFormView = ({ users }: IPlaylistsFormViewProps) => {
                 )?.user.customUsername
 
                 return (
-                  <tr key={o.id}>
-                    <td>{o.index}</td>
-                    <td>{o.title}</td>
-                    <td>{o.artist}</td>
-                    <td>{o.album}</td>
-                    <td>{customUsername ?? o.user.username}</td>
-                    <td>
-                      <button
-                        type='button'
-                        onClick={async () => {
-                          await db.deletePlaylist(o.id)
-                          await mutate(db.PLAYLISTS)
-                        }}>
-                        &times;
-                      </button>
-                      <button
-                        type='button'
-                        onClick={() => {
-                          history.push(`/playlist/${o.id}`)
-                        }}>
-                        &rarr;
-                      </button>
-                    </td>
-                  </tr>
+                  <Fragment key={o.id}>
+                    <tr>
+                      <td>{o.index}</td>
+                      <td>{o.title}</td>
+                      <td>{o.artist}</td>
+                      <td>{o.album}</td>
+                      <td>{customUsername ?? o.user.username}</td>
+                      <td>
+                        <button
+                          type='button'
+                          onClick={async () => {
+                            await db.deletePlaylist(o.id)
+                            await mutate(db.PLAYLISTS)
+                          }}>
+                          &times;
+                        </button>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            history.push(`/playlist/${o.id}`)
+                          }}>
+                          &rarr;
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td>comment:</td>
+                      <td colSpan={4}>{o.comment}</td>
+                    </tr>
+                  </Fragment>
                 )
               })
           })()}

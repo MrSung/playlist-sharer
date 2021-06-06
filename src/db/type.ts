@@ -35,7 +35,11 @@ export interface ISongGet {
   }
 }
 
-export type Playlists = ISongGet[]
+export interface IPlaylistGet extends ISongGet {
+  comment: string
+}
+
+export type Playlists = IPlaylistGet[]
 
 export interface ISongPost {
   album: string
@@ -44,13 +48,17 @@ export interface ISongPost {
   title: string
 }
 
+export interface IPlaylistPost extends ISongPost {
+  comment: string
+}
+
 export interface ICreateCustomUserArgs {
   user: firebase.User
   customUsername: string
 }
 
 export interface ICreatePlaylistArgs {
-  item: ISongPost
+  item: IPlaylistPost
   user: firebase.User
 }
 

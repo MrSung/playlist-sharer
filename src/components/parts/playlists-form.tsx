@@ -13,6 +13,7 @@ import {
 
 export const PlaylistsForm = () => {
   const loggedInUser = useContext(UserContext)
+
   const dispatch = useAppDispatch()
   const playlistsForm = useAppSelector(playlistsFormSelector)
   const isPlaylistsFormNotFilled = useAppSelector(
@@ -26,8 +27,12 @@ export const PlaylistsForm = () => {
       <form
         autoComplete='off'
         onSubmit={() => false}
-        style={{ display: 'flex', alignItems: 'flex-end' }}>
-        <label>
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '200px 200px 200px 1fr',
+          columnGap: '10px',
+        }}>
+        <label style={{ gridRow: '1 / 2', gridColumn: '1 / 2' }}>
           <span>Title: </span>
           <input
             type='text'
@@ -36,9 +41,10 @@ export const PlaylistsForm = () => {
             onChange={(ev) => {
               dispatch(actions.setTitle(ev.target.value))
             }}
+            style={{ width: '100%', margin: '0' }}
           />
         </label>
-        <label>
+        <label style={{ gridRow: '1 / 2', gridColumn: '2 / 3' }}>
           <span>Artist: </span>
           <input
             type='text'
@@ -47,9 +53,10 @@ export const PlaylistsForm = () => {
             onChange={(ev) => {
               dispatch(actions.setArtist(ev.target.value))
             }}
+            style={{ width: '100%', margin: '0' }}
           />
         </label>
-        <label>
+        <label style={{ gridRow: '1 / 2', gridColumn: '3 / 4' }}>
           <span>Album: </span>
           <input
             type='text'
@@ -58,32 +65,54 @@ export const PlaylistsForm = () => {
             onChange={(ev) => {
               dispatch(actions.setAlbum(ev.target.value))
             }}
+            style={{ width: '100%', margin: '0' }}
           />
         </label>
-        <button
-          type='button'
-          onClick={async () => {
-            if (typeof playlists === 'undefined' || loggedInUser === null) {
-              return
-            }
+        <label style={{ gridRow: '2 / 3', gridColumn: '1 / 4' }}>
+          <span>Comment: </span>
+          <textarea
+            name='comment'
+            value={playlistsForm.comment}
+            onChange={(ev) => {
+              dispatch(actions.setComment(ev.target.value))
+            }}
+            cols={30}
+            rows={2}
+            style={{ width: '100%' }}></textarea>
+        </label>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gridRow: '1 / 3',
+            gridColumn: '4 / 5',
+          }}>
+          <button
+            type='button'
+            onClick={async () => {
+              if (typeof playlists === 'undefined' || loggedInUser === null) {
+                return
+              }
 
-            await db.createPlaylist({
-              user: loggedInUser,
-              item: {
-                index: playlists.length,
-                album: playlistsForm.album,
-                artist: playlistsForm.artist,
-                title: playlistsForm.title,
-              },
-            })
-            await mutate(db.PLAYLISTS)
+              await db.createPlaylist({
+                user: loggedInUser,
+                item: {
+                  index: playlists.length,
+                  album: playlistsForm.album,
+                  artist: playlistsForm.artist,
+                  title: playlistsForm.title,
+                  comment: playlistsForm.comment,
+                },
+              })
+              await mutate(db.PLAYLISTS)
 
-            dispatch(actions.resetForm())
-          }}
-          disabled={isPlaylistsFormNotFilled}
-          style={{ marginBottom: '10px' }}>
-          Add song
-        </button>
+              dispatch(actions.resetForm())
+            }}
+            disabled={isPlaylistsFormNotFilled}
+            style={{ height: '108px', margin: '0' }}>
+            Add song
+          </button>
+        </div>
       </form>
       <hr />
     </>
