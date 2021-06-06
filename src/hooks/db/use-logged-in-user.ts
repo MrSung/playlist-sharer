@@ -1,27 +1,27 @@
 import { useState, useEffect } from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth'
+// import { useAuthState } from 'react-firebase-hooks/auth'
 
 import * as db from 'src/db'
 
 export const useLoggedInUser = () => {
-  const [authUser] = useAuthState(db.auth)
+  // const [authUser] = useAuthState(db.auth)
   const [isLoading, setIsLoading] = useState(true)
   const [loggedInUser, setLoggedInUser] = useState<db.User>(null)
 
   useEffect(() => {
-    if (!authUser) {
-      return
-    }
+    // if (!authUser) {
+    //   return
+    // }
 
     setIsLoading(false)
-    setLoggedInUser(authUser)
+    // setLoggedInUser(authUser)
 
     // Can be written with `onAuthStateChanged`
-    // db.onAuthStateChanged((loggedInUser) => {
-    //   setIsLoading(false)
-    //   setLoggedInUser(loggedInUser)
-    // })
-  }, [authUser])
+    db.onAuthStateChanged((loggedInUser) => {
+      setIsLoading(false)
+      setLoggedInUser(loggedInUser)
+    })
+  }, [])
 
   return {
     isLoading,
