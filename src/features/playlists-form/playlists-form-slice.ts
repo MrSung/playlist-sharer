@@ -1,43 +1,47 @@
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
+import { createSlice, createSelector } from '@reduxjs/toolkit'
 
 import { RootState } from 'src/app/store'
+import * as pfType from './type'
 
-export interface IPlaylistsFormState {
-  title: string
-  artist: string
-  album: string
-  comment: string
-}
-
-const initialState: IPlaylistsFormState = {
+const initialState: pfType.IPlaylistsFormState = {
   title: '',
   artist: '',
   album: '',
   comment: '',
 }
 
+const setTitle: pfType.SetTitle = (state, action) => {
+  state.title = action.payload.title
+}
+
+const setArtist: pfType.SetArtist = (state, action) => {
+  state.artist = action.payload.artist
+}
+
+const setAlbum: pfType.SetAlbum = (state, action) => {
+  state.album = action.payload.album
+}
+
+const setComment: pfType.SetComment = (state, action) => {
+  state.comment = action.payload.comment
+}
+
+const resetForm: pfType.ResetForm = (state) => {
+  state.title = ''
+  state.artist = ''
+  state.album = ''
+  state.comment = ''
+}
+
 export const playlistsFormSlice = createSlice({
   name: 'playlists-form',
   initialState,
   reducers: {
-    setTitle: (state, action: PayloadAction<string>) => {
-      state.title = action.payload
-    },
-    setArtist: (state, action: PayloadAction<string>) => {
-      state.artist = action.payload
-    },
-    setAlbum: (state, action: PayloadAction<string>) => {
-      state.album = action.payload
-    },
-    setComment: (state, action: PayloadAction<string>) => {
-      state.comment = action.payload
-    },
-    resetForm: (state) => {
-      state.title = ''
-      state.artist = ''
-      state.album = ''
-      state.comment = ''
-    },
+    setTitle,
+    setArtist,
+    setAlbum,
+    setComment,
+    resetForm,
   },
 })
 

@@ -1,37 +1,40 @@
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
+import { createSlice, createSelector } from '@reduxjs/toolkit'
 
 import { RootState } from 'src/app/store'
+import * as sfType from './type'
 
-export interface ISongsFormState {
-  title: string
-  artist: string
-  album: string
-}
-
-const initialState: ISongsFormState = {
+const initialState: sfType.ISongsFormState = {
   title: '',
   artist: '',
   album: '',
+}
+
+const setTitle: sfType.SetTitle = (state, action) => {
+  state.title = action.payload.title
+}
+
+const setArtist: sfType.SetArtist = (state, action) => {
+  state.artist = action.payload.artist
+}
+
+const setAlbum: sfType.SetAlbum = (state, action) => {
+  state.album = action.payload.album
+}
+
+const resetForm: sfType.ResetForm = (state) => {
+  state.title = ''
+  state.artist = ''
+  state.album = ''
 }
 
 export const songsFormSlice = createSlice({
   name: 'songs-form',
   initialState,
   reducers: {
-    setTitle: (state, action: PayloadAction<string>) => {
-      state.title = action.payload
-    },
-    setArtist: (state, action: PayloadAction<string>) => {
-      state.artist = action.payload
-    },
-    setAlbum: (state, action: PayloadAction<string>) => {
-      state.album = action.payload
-    },
-    resetForm: (state) => {
-      state.title = ''
-      state.artist = ''
-      state.album = ''
-    },
+    setTitle,
+    setArtist,
+    setAlbum,
+    resetForm,
   },
 })
 

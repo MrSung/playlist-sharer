@@ -37,7 +37,7 @@ export const SongsForm = ({ playlistId }: ISongsFormProps) => {
             name='title'
             value={songsForm.title}
             onChange={(ev) => {
-              dispatch(actions.setTitle(ev.target.value))
+              dispatch(actions.setTitle({ title: ev.target.value }))
             }}
           />
         </label>
@@ -48,7 +48,7 @@ export const SongsForm = ({ playlistId }: ISongsFormProps) => {
             name='artist'
             value={songsForm.artist}
             onChange={(ev) => {
-              dispatch(actions.setArtist(ev.target.value))
+              dispatch(actions.setArtist({ artist: ev.target.value }))
             }}
           />
         </label>
@@ -59,7 +59,7 @@ export const SongsForm = ({ playlistId }: ISongsFormProps) => {
             name='album'
             value={songsForm.album}
             onChange={(ev) => {
-              dispatch(actions.setAlbum(ev.target.value))
+              dispatch(actions.setAlbum({ album: ev.target.value }))
             }}
           />
         </label>

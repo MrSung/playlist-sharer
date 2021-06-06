@@ -39,7 +39,7 @@ export const PlaylistsForm = () => {
             name='title'
             value={playlistsForm.title}
             onChange={(ev) => {
-              dispatch(actions.setTitle(ev.target.value))
+              dispatch(actions.setTitle({ title: ev.target.value }))
             }}
             style={{ width: '100%', margin: '0' }}
           />
@@ -51,7 +51,7 @@ export const PlaylistsForm = () => {
             name='artist'
             value={playlistsForm.artist}
             onChange={(ev) => {
-              dispatch(actions.setArtist(ev.target.value))
+              dispatch(actions.setArtist({ artist: ev.target.value }))
             }}
             style={{ width: '100%', margin: '0' }}
           />
@@ -63,7 +63,7 @@ export const PlaylistsForm = () => {
             name='album'
             value={playlistsForm.album}
             onChange={(ev) => {
-              dispatch(actions.setAlbum(ev.target.value))
+              dispatch(actions.setAlbum({ album: ev.target.value }))
             }}
             style={{ width: '100%', margin: '0' }}
           />
@@ -74,7 +74,7 @@ export const PlaylistsForm = () => {
             name='comment'
             value={playlistsForm.comment}
             onChange={(ev) => {
-              dispatch(actions.setComment(ev.target.value))
+              dispatch(actions.setComment({ comment: ev.target.value }))
             }}
             cols={30}
             rows={2}
