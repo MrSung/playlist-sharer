@@ -56,8 +56,9 @@ export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
 
     setCustomUsername(val)
 
-    setIsValid(false)
-    setValidationMessage(validationMessageReducer(val))
+    const message = validationMessageReducer(val)
+    setIsValid(!message)
+    setValidationMessage(message)
   }
 
   const onClick = async (user: db.IUserGet | null) => {
