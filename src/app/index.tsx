@@ -1,7 +1,7 @@
 import React, { createContext } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import { Home, List } from 'src/components/pages'
+import { Home, List, User } from 'src/components/pages'
 import * as db from 'src/db'
 import * as hooks from 'src/hooks'
 
@@ -10,6 +10,7 @@ export const AuthApp = () => (
     <Switch>
       <Route exact path='/' component={Home} />
       <Route path='/playlist/:id' component={List} />
+      <Route path='/user/:id' component={User} />
     </Switch>
   </BrowserRouter>
 )

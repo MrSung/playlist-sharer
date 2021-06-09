@@ -4,9 +4,15 @@ import { Link, useRouteMatch } from 'react-router-dom'
 import { UserContext } from 'src/app'
 import * as db from 'src/db'
 
-export const Header = () => {
+interface IHeaderProps {
+  customUser: db.IUserGet | undefined | null
+}
+
+export const Header = ({ customUser }: IHeaderProps) => {
   const isPlaylistItemRoute = useRouteMatch('/playlist/:id')
   const loggedInUser = useContext(UserContext)
+  const username =
+    customUser?.user.customUsername ?? loggedInUser?.displayName ?? ''
 
   return (
     <>
@@ -29,12 +35,15 @@ export const Header = () => {
               borderRadius: '50%',
               overflow: 'hidden',
             }}>
-            <img
-              src={loggedInUser.photoURL ?? 'https://via.placeholder.com/96'}
-              alt=''
-              width='96'
-              height='96'
-            />
+            <Link to={`/user/${loggedInUser.uid}`}>
+              <img
+                src={loggedInUser.photoURL ?? 'https://via.placeholder.com/96'}
+                alt={username}
+                title={username}
+                width='96'
+                height='96'
+              />
+            </Link>
           </span>
         )}
         <p style={{ gridRow: '2 / 3', gridColumn: '1 / 2' }}>

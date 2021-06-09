@@ -23,7 +23,7 @@ export const Home = () => {
 
   return (
     <div>
-      <Header />
+      <Header customUser={matchedUser} />
       {error ? (
         <ErrorMessage>Failed to fetch users</ErrorMessage>
       ) : (
