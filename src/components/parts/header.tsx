@@ -2,17 +2,16 @@ import React, { useContext } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
 
 import { UserContext } from 'src/app'
+import { useMatchedUser } from 'src/hooks'
 import * as db from 'src/db'
 
-interface IHeaderProps {
-  customUser: db.IUserGet | undefined | null
-}
-
-export const Header = ({ customUser }: IHeaderProps) => {
+export const Header = () => {
+  const isUserRoute = useRouteMatch('/user/:id')
   const isPlaylistItemRoute = useRouteMatch('/playlist/:id')
   const loggedInUser = useContext(UserContext)
+  const matchedUser = useMatchedUser()
   const username =
-    customUser?.user.customUsername ?? loggedInUser?.displayName ?? ''
+    matchedUser?.user.customUsername ?? loggedInUser?.displayName ?? ''
 
   return (
     <>
@@ -50,7 +49,7 @@ export const Header = ({ customUser }: IHeaderProps) => {
           Playlist Sharer is a social app that enables you to share playlists
           according to your favorite song with friends in realtime.
         </p>
-        {isPlaylistItemRoute && (
+        {(isPlaylistItemRoute || isUserRoute) && (
           <span
             style={{
               gridRow: '3 / 4',

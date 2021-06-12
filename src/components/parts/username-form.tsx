@@ -2,13 +2,14 @@ import React, { useState, useContext } from 'react'
 import { mutate } from 'swr'
 
 import { UserContext } from 'src/app'
+import { useMatchedUser } from 'src/hooks'
 import * as db from 'src/db'
 import { ErrorMessage } from './error-message'
 
 enum ValidationMessage {
-  EmptyMessage = 'custom username is empty!',
-  ShortMessage = 'custom username is too short!',
-  InvalidMessage = 'custom username is invalid!',
+  Empty = 'custom username is empty!',
+  Short = 'custom username is too short!',
+  Invalid = 'custom username is invalid!',
 }
 
 const validationMessageReducer = (val: string) => {
@@ -16,21 +17,18 @@ const validationMessageReducer = (val: string) => {
 
   switch (true) {
     case val.length === 0:
-      return ValidationMessage.EmptyMessage
+      return ValidationMessage.Empty
     case val.length < 3:
-      return ValidationMessage.ShortMessage
+      return ValidationMessage.Short
     case !re.test(val):
-      return ValidationMessage.InvalidMessage
+      return ValidationMessage.Invalid
     default:
       return undefined
   }
 }
 
-interface IUsernameFormProps {
-  customUser: db.IUserGet | undefined | null
-}
-
-export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
+export const UsernameForm = () => {
+  const matchedUser = useMatchedUser()
   const [customUsername, setCustomUsername] = useState('')
   const [isValid, setIsValid] = useState(false)
   const [validationMessage, setValidationMessage] = useState<
@@ -72,7 +70,7 @@ export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
 
   return (
     <div>
-      {typeof customUser === 'undefined' ? (
+      {typeof matchedUser === 'undefined' ? (
         <>
           <h2>Choose Username</h2>
           <form onSubmit={onSubmit} autoComplete='off'>
@@ -98,9 +96,9 @@ export const UsernameForm = ({ customUser }: IUsernameFormProps) => {
           <h2>Registered Custom Username</h2>
           <div>
             <span style={{ marginRight: '1em' }}>
-              {customUser?.user.customUsername}
+              {matchedUser?.user.customUsername}
             </span>
-            <button type='button' onClick={() => onClick(customUser)}>
+            <button type='button' onClick={() => onClick(matchedUser)}>
               &times;
             </button>
           </div>
